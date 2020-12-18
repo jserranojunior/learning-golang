@@ -4,5 +4,6 @@ import ("fmt"
 	"./arit")
 
 func main(){
-	fmt.Println(arit.Sun(5,5))
+	fmt.Println(arit.Sun(3,4))
+	fmt.Println(arit.Multply(5,5))
 }
