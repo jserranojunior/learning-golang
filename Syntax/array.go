@@ -26,5 +26,4 @@ func main() {
 
 	var multi = [2][2]int{{1, 2}, {2, 9}}
 	fmt.Println("multi", multi)
-
 }
