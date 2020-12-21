@@ -2,40 +2,48 @@ package cepapi
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"net/http"
 )
 
 // Cep interface
 type Cep struct {
-	cep         string
-	logradouro  string
-	complemento string
-	bairro      string
-	localidade  string
-	uf          string
-	ibge        string
-	gia         string
-	ddd         string
-	siafi       string
+	Cep         string `json:"cep"`
+	Logradouro  string `json:"logradouro"`
+	Complemento string `json:"complemento"`
+	Bairro      string `json:"bairro"`
+	Localidade  string `json:"localidade"`
+	Uf          string `json:"uf"`
+	Ibge        string `json:"ibge"`
+	Gia         string `json:"gia"`
+	Ddd         string `json:"ddd"`
+	Siafi       string `json:"siafi"`
 }
 
 //GetAddress return address with cep passed
-func GetAddress(cep string) Cep {
-	response, err := http.Get("http://viacep.com.br/ws/01001000/json")
+func GetAddress(cep string) (Cep, error) {
+	var Address Cep
+	url := "http://viacep.com.br/ws/" + cep + "/json"
+	response, err := http.Get(url)
 
 	if err != nil {
-		fmt.Println(err.Error())
+		return Address, err
 	}
 
 	responseData, err := ioutil.ReadAll(response.Body)
+
 	if err != nil {
-		fmt.Println(err.Error())
+		return Address, err
 	}
 
 	value := string(responseData)
-	var Address Cep
-	json.Unmarshal([]byte(value), &Address)
-	return Address
+
+	err = json.Unmarshal([]byte(value), &Address)
+
+	if Address.Cep == "" {
+		return Address, errors.New("There's not address with this cep")
+	}
+
+	return Address, nil
 }
