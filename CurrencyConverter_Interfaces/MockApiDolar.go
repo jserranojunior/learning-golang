@@ -6,6 +6,7 @@ type MockMoney struct {
 }
 
 //GetDolar mock return API
-func (mock MockMoney) GetDolar() float64 {
-	return 15.0
+func (mock MockMoney) GetDolar() (float64, error) {
+
+	return 15.0, nil
 }

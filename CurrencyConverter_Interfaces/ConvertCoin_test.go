@@ -8,18 +8,18 @@ func TestMockRealInDolar(t *testing.T) {
 		value: 15.0,
 	}
 
-	test := RealToDolar(money)
+	test, err := RealToDolar(money)
 	result := 15.0
-	if test != result {
+	if test != result || err != nil {
 		t.Error("Expected:", result, "Got:", test)
 	}
 }
 
 func TestRealInDolar(t *testing.T) {
 	money := MoneyContructor()
-	test := RealToDolar(money)
+	test, err := RealToDolar(money)
 	result := 17.0
-	if test != result {
+	if test != result || err != nil {
 		t.Error("Expected:", result, "Got:", test)
 	}
 }
