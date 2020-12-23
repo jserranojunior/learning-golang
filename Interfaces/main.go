@@ -46,8 +46,8 @@ func main() {
 }
 
 //Cria a struct
-//Cria uma interface
-//Cria um Metodo
+//Cria uma interface que contem o tipo de metodo
+//Cria um Metodo apontando para a struct
 //Cria uma função
 
 //inicia a strutura
