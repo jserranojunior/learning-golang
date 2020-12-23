@@ -2,11 +2,15 @@ package cci
 
 //MockMoney Value
 type MockMoney struct {
-	value float64
+	Value float64
 }
 
 //GetDolar mock return API
 func (mock MockMoney) GetDolar() (float64, error) {
+	return float64(5), nil
+}
 
-	return 15.0, nil
+//GetValue return value default
+func (mock MockMoney) GetValue() float64 {
+	return mock.Value
 }
