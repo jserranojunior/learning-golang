@@ -2,14 +2,20 @@ package main
 
 import (
 	"fmt"
+	"html"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
+	Routes()
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("OLA SERVER")
+//Handler new
+func Handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello Another, %q", html.EscapeString(r.URL.Path))
+}
+
+//HandlerTwo new
+func HandlerTwo(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Outra Rota que nem sei, %q", html.EscapeString(r.URL.Path))
 }
