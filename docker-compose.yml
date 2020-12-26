@@ -1,0 +1,68 @@
+version: "2"
+
+networks:
+  internal:
+    driver: bridge
+
+services:
+  mysql:
+    container_name: mysql_localhost
+    image: mysql:8.0.1
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      # MYSQL_DATABASE: ${DB}
+      MYSQL_USER: gouser
+      MYSQL_ROOT_PASSWORD: golangpass
+      MYSQL_PASSWORD: golangpass
+      SERVICE_NAME: mysql.localhost
+    volumes:
+      - ./database/mysql:/var/lib/mysql
+    networks:
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - traefik.http.routers.mysql.rule=Host(`mysql.localhost`)
+      - traefik.http.services.mysql.loadbalancer.server.port=3306
+
+  phpmyadmin:
+    container_name: "phpmyadmin"
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: mysql_localhost
+    depends_on:
+      - mysql
+    ports:
+      - 2050:80
+    networks:
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.localhost`)
+      - traefik.http.services.phpmyadmin.loadbalancer.server.port=80
+
+  traefik:
+    image: "traefik"
+    restart: always
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--api.debug=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedByDefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - traefik.http.routers.traefik.rule=Host(`traefik.localhost`)
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
