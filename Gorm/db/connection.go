@@ -1,4 +1,4 @@
-package main
+package db
 
 import (
 	"fmt"
@@ -6,11 +6,6 @@ import (
 	mysql "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
-
-type Users struct {
-	gorm.Model
-	Name string
-}
 
 const (
 	dbName = "golangdb"
@@ -20,6 +15,7 @@ const (
 	dbPort = "3307"
 )
 
+//Connection export connection mysql
 func Connection() *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -27,9 +23,4 @@ func Connection() *gorm.DB {
 		fmt.Println(err.Error())
 	}
 	return db
-}
-func main() {
-	db := Connection()
-	// Create table for `User`
-	db.Migrator().CreateTable(&Users{})
 }
