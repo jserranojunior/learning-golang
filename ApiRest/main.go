@@ -5,6 +5,8 @@ import (
 )
 
 func main() {
+
 	server := routes.Routes()
-	server.Run()
+
+	server.Run(":8090")
 }

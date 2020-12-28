@@ -8,14 +8,23 @@ import (
 
 //Store return create
 func Store(c *gin.Context) {
-	c.JSON(407, gin.H{
-		"Data": "Create Books Controller",
+
+	message := ("Store Books Controller " + c.PostForm("name"))
+	c.JSON(200, gin.H{
+		"Data": message,
 	})
 }
 
 //Index return read
 func Index(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"Data": "Read Books Controller"})
+}
+
+//Edit return read
+func Edit(c *gin.Context) {
+	id := c.Param("id")
+	message := ("Read Books Controller " + id)
+	c.JSON(http.StatusOK, gin.H{"data": message})
 }
 
 //Update return Update
