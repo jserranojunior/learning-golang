@@ -1,9 +1,12 @@
 package db
 
-import users "../users"
+import (
+	"../config"
+	users "../users"
+)
 
 //Migrate exec migrate
 func Migrate() {
-	connection := Connection()
+	connection := config.Connection()
 	connection.AutoMigrate(users.Users{})
 }
